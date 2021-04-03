@@ -1,0 +1,45 @@
+{
+	"info": {
+		"_postman_id": "7ea33c6c-9377-40a8-b4bd-c8d2d99983e5",
+		"name": "Notification",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Send FCM Notification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "key={{serverKey}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"notification\": {\n        \"title\": \"Firebase Web Push Notification\",\n        \"body\": \"Hello Buddy\"\n    },\n    \"to\": \"f6aGk_h2Gzy9ufVfSJk6_A:APA91bGtFxoP0VwgOhK586ThD9lm-gUaq16Js-nJjTBLum1WmisTWBQfrb5J56sGKJrqv4Whkgs3Y7ZC8NiqxDzrZBF1nRJMJ4G2PvdGMoTHz4j1e6lvJftZRSoWTvUKY-LaNqR6YxaO\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fcm.googleapis.com/fcm/send",
+					"protocol": "https",
+					"host": [
+						"fcm",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"fcm",
+						"send"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
