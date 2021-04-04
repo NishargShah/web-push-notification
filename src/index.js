@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import firebase from "./firebase";
+import firebase from "firebase";
 import { vapidKey } from "./config";
-import './firebase.jsx';
+import notification from './firebase';
 import './index.css';
 
 const App = () => {
-  const askForToken = async() => {
+  useEffect(() => {
+    (async () => notification.init())();
+  }, []);
+
+  const askForToken = async () => {
     try {
       const messaging = firebase.messaging();
-      const token = await messaging.getToken({vapidKey});
+      const token = await messaging.getToken({ vapidKey });
       console.debug(token);
-      messaging.onMessage(payload => console.debug('Active Message JSON', payload));
       return token;
     } catch (error) {
       console.error('ERROR', error);

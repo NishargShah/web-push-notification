@@ -11,18 +11,20 @@ const firebaseConfig = {
   measurementId: "G-T9F2ZPMZJ9"
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
 
-const messaging = firebase.messaging();
+  const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  // Customize notification here
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    // icon: '/firebase-logo.png'
-  };
+  messaging.onBackgroundMessage((payload) => {
+    console.log('[firebase-messaging-sw.js] Received background message ', payload);
+    // Customize notification here
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+      body: payload.notification.body,
+      // icon: '/firebase-logo.png'
+    };
 
-  return self.registration.showNotification(notificationTitle, notificationOptions);
-});
+    return self.registration.showNotification(notificationTitle, notificationOptions);
+  });
+}

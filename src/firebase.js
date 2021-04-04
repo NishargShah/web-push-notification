@@ -2,8 +2,6 @@ import firebase from 'firebase/app';
 import { url, serverKey, vapidKey, firebaseConfig } from './config';
 import 'firebase/messaging';
 
-firebase.initializeApp(firebaseConfig);
-
 const isTokenSentToServer = () => window.localStorage.getItem('sentToServer') === '1';
 
 const setTokenSentToServer = sent => window.localStorage.setItem('sentToServer', sent ? '1' : '0');
@@ -15,13 +13,10 @@ const sendTokenToServer = currentToken => {
   } else {
     console.debug("Token already sent to server so won't send it again unless it changes");
   }
-}
-
-const messaging = firebase.messaging();
-// console.debug('Supported?', firebase.messaging.isSupported());
+};
 
 // below function is to subscribe to all notification.
-const subscribeTokenToTopic = async(token, topic) => {
+const subscribeTokenToTopic = async (token, topic) => {
   const notification = {
     title: 'Hello Title',
     body: 'My Body',
@@ -32,8 +27,8 @@ const subscribeTokenToTopic = async(token, topic) => {
   try {
     const response = await fetch(`https://iid.googleapis.com/iid/v1/${token}/rel/topics/${topic}`, {
       method: 'POST',
-      headers: new Headers({Authorization: 'key=' + serverKey}),
-      body: JSON.stringify({notification, to: token}),
+      headers: new Headers({ Authorization: 'key=' + serverKey }),
+      body: JSON.stringify({ notification, to: token }),
     });
     if (response.status < 200 || response.status >= 400) return new Error('Error subscribing to topic');
     console.debug(`Subscribed to ${topic}`);
@@ -41,16 +36,21 @@ const subscribeTokenToTopic = async(token, topic) => {
   } catch (e) {
     console.error('[ERROR] Failed to subscribe' + e);
   }
-}
+};
 
-(async() => {
+const init = async () => {
+  firebase.initializeApp(firebaseConfig);
+
+  const messaging = firebase.messaging();
+  console.debug('Supported?', firebase.messaging.isSupported());
+
   try {
     const registration = await navigator.serviceWorker.register(url);
     const permission = await Notification.requestPermission();
     if (permission === 'granted') {
       console.debug('Notification permission granted.');
       try {
-        const currentToken = await messaging.getToken({vapidKey, serviceWorkerRegistration: registration})
+        const currentToken = await messaging.getToken({ vapidKey, serviceWorkerRegistration: registration });
         if (currentToken) {
           await sendTokenToServer(currentToken);
           await subscribeTokenToTopic(currentToken, 'allDevices');
@@ -83,6 +83,6 @@ const subscribeTokenToTopic = async(token, topic) => {
   messaging.onMessage(payload => {
     console.debug('Message received', payload);
   });
-})();
+};
 
-export default firebase;
+export default { init };
