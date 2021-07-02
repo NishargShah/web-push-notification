@@ -10,7 +10,7 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/firebase-messaging-sw.js');
+          navigator.serviceWorker.register('%REACT_APP_BASE_PATH%firebase-messaging-sw.js');
         });
       }
     </script>

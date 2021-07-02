@@ -1,15 +1,16 @@
-export const url = 'firebase-messaging-sw.js';
+export const url = `${process.env.REACT_APP_BASE_PATH}firebase-messaging-sw.js`;
 
-export const serverKey = 'AAAA5YTkmfM:APA91bF4arvvR0rW3XL7-HpGbc_Sst4DSscws9hEaxdyz02_jFp9WT4LaG9gx5ZzqdvgYEX1kGvW8Of-f6anyaK3hxUUq-QU_Tc5SukZCkf63AxiQp-_hNkPQOLPTtgL-GA1rsr3ql3n';
+// NOT USED ANYWHERE BUT JUST FOR LISTING
+export const serverKey = 'AAAA_Wi7tbU:APA91bGbBbgPR4cQXJS51onTK_Ja6gaZ4jwkqd29KETPwtewt6m4ljQwwWRY180vXka6lZZwH6seZ7lFBXH5C7Nk-Hgwv2tx-s4_0bQvx3UKQvN_iytxmCOAW3EUn3Pw_dxrP-sIlXZq';
 
-export const vapidKey = 'BKvRbVVc5L73SsRkW4R06cR1ZZdFNlNo4C6TqDdWzRP3ockE-nv0UIGHMRJIoJlblfIG6lfhIFq1-8dJ3ELHd9Q';
+export const vapidKey = 'BEFYw-8jbHc-vf0JcuDhYIbFDakFY2jq2ckoivIBMrK7mSIGv63UvbqQdmGB6xLqcEXedzX25UvraNTP9w1wBNw';
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyDjpoJLCQsqZnaXaV8R92IGVbMJ_4X8isU",
-  authDomain: "linklanes-notifications.firebaseapp.com",
-  projectId: "linklanes-notifications",
-  storageBucket: "linklanes-notifications.appspot.com",
-  messagingSenderId: "985777084915",
-  appId: "1:985777084915:web:ccc97431860ee971011a86",
-  measurementId: "G-T9F2ZPMZJ9"
+  apiKey: "AIzaSyC_rH4aQic8PDM63rKEmusgM4q74oWKaGI",
+  authDomain: "fir-web-push-notificatio-a1af8.firebaseapp.com",
+  projectId: "fir-web-push-notificatio-a1af8",
+  storageBucket: "fir-web-push-notificatio-a1af8.appspot.com",
+  messagingSenderId: "1088383858101",
+  appId: "1:1088383858101:web:ca4c1f87c1fa89998495fc",
+  measurementId: "G-TQ0LREPX15"
 };

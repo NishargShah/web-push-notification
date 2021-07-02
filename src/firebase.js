@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import { url, serverKey, vapidKey, firebaseConfig } from './config';
+import { url, vapidKey, firebaseConfig } from './config';
 import 'firebase/messaging';
 
 const isTokenSentToServer = () => window.localStorage.getItem('sentToServer') === '1';
@@ -15,29 +15,6 @@ const sendTokenToServer = currentToken => {
   }
 };
 
-// below function is to subscribe to all notification.
-const subscribeTokenToTopic = async (token, topic) => {
-  const notification = {
-    title: 'Hello Title',
-    body: 'My Body',
-    // 'icon': logo,
-    click_action: 'https://google.com',
-  };
-
-  try {
-    const response = await fetch(`https://iid.googleapis.com/iid/v1/${token}/rel/topics/${topic}`, {
-      method: 'POST',
-      headers: new Headers({ Authorization: 'key=' + serverKey }),
-      body: JSON.stringify({ notification, to: token }),
-    });
-    if (response.status < 200 || response.status >= 400) return new Error('Error subscribing to topic');
-    console.debug(`Subscribed to ${topic}`);
-    return true;
-  } catch (e) {
-    console.error('[ERROR] Failed to subscribe' + e);
-  }
-};
-
 const init = async () => {
   firebase.initializeApp(firebaseConfig);
 
@@ -50,10 +27,12 @@ const init = async () => {
     if (permission === 'granted') {
       console.debug('Notification permission granted.');
       try {
-        const currentToken = await messaging.getToken({ vapidKey, serviceWorkerRegistration: registration });
+        const currentToken = await messaging.getToken({
+          vapidKey,
+          serviceWorkerRegistration: registration,
+        });
         if (currentToken) {
           await sendTokenToServer(currentToken);
-          await subscribeTokenToTopic(currentToken, 'allDevices');
           localStorage.setItem('current_token', currentToken);
           console.debug('General Token', currentToken);
         } else {
@@ -63,10 +42,6 @@ const init = async () => {
       } catch (e) {
         console.debug('[ERROR] Token not received', e);
       }
-
-      messaging.onMessage(payload => {
-        console.debug('Message received', payload);
-      });
     } else {
       console.debug('Unable to get permission to notify.');
     }
@@ -79,9 +54,8 @@ const init = async () => {
   // - a message is received while the app has focus
   // - the user clicks on an app notification created by a service worker
   //   `messaging.setBackgroundMessageHandler` handler.
-  // console.debug('Message received.&&&&&&&&&^^^^^^^^^^^^^^^^^^^ ');
   messaging.onMessage(payload => {
-    console.debug('Message received', payload);
+    console.log('Message received', payload);
   });
 };
 

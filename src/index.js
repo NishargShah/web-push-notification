@@ -14,7 +14,7 @@ const App = () => {
     try {
       const messaging = firebase.messaging();
       const token = await messaging.getToken({ vapidKey });
-      console.debug(token);
+      console.log(token);
       return token;
     } catch (error) {
       console.error('ERROR', error);
